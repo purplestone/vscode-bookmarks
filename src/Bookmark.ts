@@ -8,20 +8,38 @@ export const NO_MORE_BOOKMARKS = -2;
 
 export const JUMP_FORWARD = 1;
 export const JUMP_BACKWARD = -1;
-export enum JUMP_DIRECTION { JUMP_FORWARD, JUMP_BACKWARD };
+export const JUMP_SWAP = 2;
+export enum JUMP_DIRECTION { JUMP_FORWARD, JUMP_BACKWARD, JUMP_SWAP };
 
-export class Bookmark  {
+export class Bookmark {
     public fsPath: string;
     public bookmarks: number[];
 
     constructor(fsPath: string) {
         this.fsPath = fsPath;
         this.bookmarks = [];
+        this.bookmarkSwap = [];
+    }
+
+    public bookmarkSwap : any[];
+
+    public pushSwap(line){
+        if(line > 0) {
+            this.bookmarkSwap.push(line);
+        }
+        this.bookmarkSwap = this.bookmarkSwap.slice(-2);
+
     }
 
     public nextBookmark(currentline: number, direction: JUMP_DIRECTION = JUMP_FORWARD) {
+        var _pub = this;
 
         return new Promise((resolve, reject) => {
+            var _resolve = resolve;
+            resolve = function (nextBookmark) {console.log('nextBookmark, _pub.bookmarkSwap', nextBookmark, _pub.bookmarkSwap);
+              _resolve.apply(null, arguments);
+              _pub.pushSwap(nextBookmark);
+            }
 
             if (typeof this.bookmarks === "undefined") {
                 reject('typeof this.bookmarks == "undefined"');
@@ -65,7 +83,9 @@ export class Bookmark  {
                     resolve(nextBookmark);
                     return;
                 }
-            } else { // JUMP_BACKWARD
+            }if (direction === exports.JUMP_SWAP) {
+               return resolve(_pub.bookmarkSwap[0]);
+            }else{ // JUMP_BACKWARD
                 for (let index = this.bookmarks.length; index >= 0; index--) {
                     let element = this.bookmarks[ index ];
                     if (element < currentline) {
@@ -144,8 +164,4 @@ export class Bookmark  {
     public clear() {
         this.bookmarks.length = 0;
     }
-
-    // public cleared(): void {
-    //     return;
-    // }
 }

@@ -2,14 +2,14 @@
     "name": "Bookmarks",
     "displayName": "Bookmarks",
     "description": "Mark lines and jump to them",
-    "version": "0.16.0",
+    "version": "0.15.2",
     "publisher": "alefragnani",
     "galleryBanner": {
         "color": "#000000",
         "theme": "dark"
     },
     "engines": {
-        "vscode": "^1.13.0"
+        "vscode": "^1.12.0"
     },
     "categories": [
         "Other"
@@ -33,19 +33,10 @@
         "url": "https://github.com/alefragnani/vscode-bookmarks/issues"
     },
     "activationEvents": [
-        "*",
-        "onView:bookmarksExplorer"
+        "*"
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "views": {
-            "explorer": [
-                {
-                    "id": "bookmarksExplorer",
-                    "name": "Bookmarks"
-                }
-            ]
-        },
         "commands": [
             {
                 "command": "bookmarks.toggle",
@@ -60,8 +51,8 @@
                 "title": "Bookmarks: Jump to Previous"
             },
             {
-                "command": "bookmarks.jumpTo",
-                "title": "Bookmarks: Jump to Document/Line"
+                "command": "bookmarks.jumpToSwap",
+                "title": "Bookmarks: Jump to swap"
             },
             {
                 "command": "bookmarks.selectLines",
@@ -84,24 +75,8 @@
                 "title": "Bookmarks: List"
             },
             {
-                "command": "bookmarks.refresh",
-                "title": "Refresh",
-                "icon": {
-					"light": "images/refresh-light.svg",
-					"dark": "images/refresh-dark.svg"
-				}
-            },
-            {
                 "command": "bookmarks.clear",
                 "title": "Bookmarks: Clear"
-            },
-            {
-                "command": "bookmarks.clearFromFile",
-                "title": "Clear"
-            },
-            {
-                "command": "bookmarks.deleteBookmark",
-                "title": "Delete"
             },
             {
                 "command": "bookmarks.listFromAllFiles",
@@ -113,24 +88,6 @@
             }
         ],
         "menus": {
-            "commandPalette": [
-                {
-                    "command": "bookmarks.jumpTo",
-                    "when": "false"
-                },
-                {
-                    "command": "bookmarks.refresh",
-                    "when": "false"
-                },
-                {
-                    "command": "bookmarks.clearFromFile",
-                    "when": "false"
-                },
-                {
-                    "command": "bookmarks.deleteBookmark",
-                    "when": "false"
-                }
-            ],
             "editor/context": [
                 {
                     "command": "bookmarks.toggle",
@@ -150,24 +107,7 @@
                     "command": "bookmarks.selectLines",
                     "group": "bookmarks"
                 }
-            ],
-            "view/title": [
-				{
-					"command": "bookmarks.refresh",
-					"when": "view == bookmarksExplorer",
-					"group": "navigation"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "bookmarks.clearFromFile",
-					"when": "view == bookmarksExplorer && viewItem == BookmarkNodeFile"
-				},
-				{
-					"command": "bookmarks.deleteBookmark",
-					"when": "view == bookmarksExplorer && viewItem == BookmarkNodeBookmark"
-				}
-			]
+            ]
         },
         "configuration": {
             "type": "object",
